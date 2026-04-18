@@ -119,6 +119,11 @@ textarea {
   color: var(--text);
 }
 
+.site-nav a.is-active {
+  color: var(--text);
+  font-weight: 700;
+}
+
 .button {
   display: inline-flex;
   align-items: center;
@@ -133,6 +138,12 @@ textarea {
 
 .button:hover {
   transform: translateY(-1px);
+}
+
+.button:disabled {
+  cursor: wait;
+  opacity: 0.72;
+  transform: none;
 }
 
 .button-primary {
@@ -226,6 +237,15 @@ textarea {
   min-height: 500px;
 }
 
+.hero-image {
+  position: absolute;
+  right: 42px;
+  bottom: 32px;
+  width: min(36%, 170px);
+  opacity: 0.78;
+  z-index: 1;
+}
+
 .hero-visual::before,
 .hero-visual::after {
   content: '';
@@ -270,6 +290,7 @@ textarea {
   padding: 22px;
   border-radius: 28px;
   transform: rotate(-8deg);
+  z-index: 2;
 }
 
 .dashboard-floating {
@@ -279,6 +300,7 @@ textarea {
   width: 220px;
   padding: 18px;
   border-radius: 24px;
+  z-index: 3;
 }
 
 .person-card {
@@ -290,6 +312,7 @@ textarea {
   gap: 14px;
   padding: 16px 18px;
   border-radius: 22px;
+  z-index: 4;
 }
 
 .person-avatar {
@@ -442,9 +465,35 @@ textarea {
 
 .section-heading h2,
 .feature-copy h2,
-.contact-copy h2 {
+.contact-copy h2,
+.subpage-hero h1 {
   font-size: clamp(2rem, 4vw, 3rem);
   margin-bottom: 14px;
+}
+
+.subpage-hero {
+  display: grid;
+  gap: 16px;
+  padding-top: 64px;
+  padding-bottom: 34px;
+  background:
+    linear-gradient(135deg, rgba(72, 183, 96, 0.12), rgba(255, 255, 255, 0)),
+    #f8fbf6;
+}
+
+.subpage-hero h1 {
+  max-width: 920px;
+  margin-top: 0;
+  font-family: 'Manrope', sans-serif;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.page-lead {
+  max-width: 760px;
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.8;
 }
 
 .logo-row {
@@ -469,7 +518,10 @@ textarea {
 
 .audience-grid,
 .story-grid,
-.stats-grid {
+.stats-grid,
+.feature-panel-grid,
+.process-list,
+.plan-grid {
   gap: 18px;
 }
 
@@ -478,13 +530,24 @@ textarea {
   margin-top: 28px;
 }
 
+.feature-panel-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .info-card,
 .story-card,
-.stat-card {
+.stat-card,
+.detail-card,
+.process-card,
+.plan-card {
   border-radius: 26px;
 }
 
-.audience-card {
+.audience-card,
+.detail-card,
+.process-card,
+.plan-card {
   padding: 26px;
 }
 
@@ -506,7 +569,11 @@ textarea {
 }
 
 .audience-card h3,
-.story-content h3 {
+.story-content h3,
+.story-content h2,
+.detail-card h2,
+.process-card h3,
+.plan-card h2 {
   margin: 0 0 10px;
   font-family: 'Manrope', sans-serif;
   font-size: 1.35rem;
@@ -515,7 +582,11 @@ textarea {
 .audience-card p,
 .story-content span,
 .story-content a,
-.testimonial-copy span {
+.testimonial-copy span,
+.detail-card p,
+.process-card p,
+.plan-card p,
+.plan-feature-list {
   color: var(--text-muted);
 }
 
@@ -666,6 +737,85 @@ textarea {
   color: var(--green-dark);
 }
 
+.story-content p {
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+.blog-card .story-content {
+  min-height: 260px;
+}
+
+.blog-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.blog-meta small {
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.process-list,
+.plan-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.plan-card {
+  position: relative;
+}
+
+.plan-card.is-featured {
+  border-color: rgba(72, 183, 96, 0.72);
+  box-shadow: 0 24px 48px rgba(72, 183, 96, 0.16);
+}
+
+.plan-badge {
+  display: inline-flex;
+  margin-bottom: 16px;
+  border-radius: 999px;
+  padding: 0.45rem 0.8rem;
+  background: var(--green-soft);
+  color: var(--green-dark);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.plan-price {
+  display: block;
+  margin-bottom: 12px;
+  font-family: 'Manrope', sans-serif;
+  font-size: 2.5rem;
+}
+
+.plan-feature-list {
+  display: grid;
+  gap: 10px;
+  margin: 22px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.plan-feature-list li {
+  position: relative;
+  padding-left: 24px;
+}
+
+.plan-feature-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--green);
+}
+
 .contact-note {
   display: inline-flex;
   flex-direction: column;
@@ -752,6 +902,9 @@ textarea {
   .stats-section,
   .audience-grid,
   .story-grid,
+  .feature-panel-grid,
+  .process-list,
+  .plan-grid,
   .logo-row,
   .mini-logo-row,
   .contact-form,
@@ -798,7 +951,8 @@ textarea {
 
   .dashboard-main,
   .dashboard-floating,
-  .person-card {
+  .person-card,
+  .hero-image {
     position: relative;
     inset: auto;
     transform: none;
