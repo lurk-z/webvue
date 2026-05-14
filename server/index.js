@@ -13,6 +13,24 @@ const dataFile = path.join(dataDirectory, 'submissions.json')
 
 app.use(express.json())
 
+app.use((request, response, next) => {
+  const origin = request.headers.origin
+
+  if (origin) {
+    response.setHeader('Access-Control-Allow-Origin', origin)
+    response.setHeader('Vary', 'Origin')
+  }
+
+  response.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS')
+  response.setHeader('Access-Control-Allow-Headers', 'Content-Type')
+
+  if (request.method === 'OPTIONS') {
+    return response.sendStatus(204)
+  }
+
+  return next()
+})
+
 async function ensureDataFile() {
   await fs.mkdir(dataDirectory, { recursive: true })
 
@@ -35,10 +53,22 @@ async function saveSubmissions(submissions) {
 
 function normalize(body) {
   return {
+    formType: body.formType?.trim() || 'contact',
     name: body.name?.trim() || '',
     email: body.email?.trim() || '',
-    organization: body.organization?.trim() || '',
-    interest: body.interest?.trim() || '',
+    phone: body.phone?.trim() || '',
+    topic: body.topic?.trim() || '',
+    date: body.date?.trim() || '',
+    time: body.time?.trim() || '',
+    guests: body.guests?.trim() || '',
+    occasion: body.occasion?.trim() || '',
+    seating: body.seating?.trim() || '',
+    pickupTime: body.pickupTime?.trim() || '',
+    entree: body.entree?.trim() || '',
+    quantity: Number(body.quantity || 0),
+    spice: body.spice?.trim() || '',
+    extras: Array.isArray(body.extras) ? body.extras.map((item) => String(item)) : [],
+    updates: Boolean(body.updates),
     message: body.message?.trim() || '',
   }
 }
@@ -54,7 +84,7 @@ app.get('/api/health', (_request, response) => {
 app.post('/api/contact', async (request, response) => {
   const payload = normalize(request.body)
 
-  if (!payload.name || !payload.email || !payload.organization || !payload.message) {
+  if (!payload.name || !payload.email || !payload.message) {
     return response.status(400).json({ message: 'Please complete all required fields.' })
   }
 
