@@ -128,6 +128,25 @@ const contactForm = reactive({
   message: '',
 })
 
+const cateringForm = reactive({
+  formType: 'catering',
+  name: '',
+  email: '',
+  phone: '',
+  date: '',
+  guests: '20',
+  occasion: 'Office lunch',
+  message: '',
+})
+
+const feedbackForm = reactive({
+  formType: 'feedback',
+  name: '',
+  email: '',
+  topic: 'Dining experience',
+  message: '',
+})
+
 const newsletterForm = reactive({
   formType: 'newsletter',
   name: 'Guest',
@@ -139,6 +158,8 @@ const submitState = reactive({
   reservation: 'idle',
   order: 'idle',
   contact: 'idle',
+  catering: 'idle',
+  feedback: 'idle',
   newsletter: 'idle',
 })
 
@@ -146,6 +167,8 @@ const submitMessage = reactive({
   reservation: '',
   order: '',
   contact: '',
+  catering: '',
+  feedback: '',
   newsletter: '',
 })
 
@@ -455,7 +478,7 @@ onBeforeUnmount(() => {
         <section class="section subpage-hero">
           <p class="eyebrow">Contact</p>
           <h1>Ask about events, catering, and group dining.</h1>
-          <p>This contact form gives the tracker another form layout to analyze.</p>
+          <p>This page has three separate forms so form analytics can compare multiple forms on one route.</p>
         </section>
         <section class="section form-section">
           <form class="data-form" @submit.prevent="submitForm('contact', contactForm, '/contact/success')">
@@ -466,6 +489,31 @@ onBeforeUnmount(() => {
             <div class="form-actions form-full">
               <button class="button button-primary" type="submit" :disabled="submitState.contact === 'submitting'">Send message</button>
               <p class="form-status" :class="submitState.contact" aria-live="polite">{{ submitMessage.contact }}</p>
+            </div>
+          </form>
+
+          <form class="data-form secondary-form" @submit.prevent="submitForm('catering', cateringForm, '/contact/success')">
+            <label>Event contact<input v-model.trim="cateringForm.name" name="catering_name" required /></label>
+            <label>Email<input v-model.trim="cateringForm.email" name="catering_email" type="email" required /></label>
+            <label>Phone<input v-model.trim="cateringForm.phone" name="catering_phone" type="tel" required /></label>
+            <label>Event date<input v-model="cateringForm.date" name="catering_date" type="date" required /></label>
+            <label>Guest count<select v-model="cateringForm.guests" name="catering_guests"><option>20</option><option>35</option><option>50</option><option>75</option><option>100+</option></select></label>
+            <label>Occasion<select v-model="cateringForm.occasion" name="catering_occasion"><option>Office lunch</option><option>Wedding party</option><option>Product launch</option><option>Family celebration</option></select></label>
+            <label class="form-full">Catering details<textarea v-model.trim="cateringForm.message" name="catering_message" rows="5" required></textarea></label>
+            <div class="form-actions form-full">
+              <button class="button button-primary" type="submit" :disabled="submitState.catering === 'submitting'">Request catering</button>
+              <p class="form-status" :class="submitState.catering" aria-live="polite">{{ submitMessage.catering }}</p>
+            </div>
+          </form>
+
+          <form class="data-form secondary-form" @submit.prevent="submitForm('feedback', feedbackForm, '/contact/success')">
+            <label>Your name<input v-model.trim="feedbackForm.name" name="feedback_name" required /></label>
+            <label>Email<input v-model.trim="feedbackForm.email" name="feedback_email" type="email" required /></label>
+            <label>Feedback type<select v-model="feedbackForm.topic" name="feedback_topic"><option>Dining experience</option><option>Pickup order</option><option>Service note</option><option>Website issue</option></select></label>
+            <label class="form-full">Feedback<textarea v-model.trim="feedbackForm.message" name="feedback_message" rows="6" required></textarea></label>
+            <div class="form-actions form-full">
+              <button class="button button-primary" type="submit" :disabled="submitState.feedback === 'submitting'">Send feedback</button>
+              <p class="form-status" :class="submitState.feedback" aria-live="polite">{{ submitMessage.feedback }}</p>
             </div>
           </form>
         </section>

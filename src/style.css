@@ -496,6 +496,10 @@ p {
   padding: clamp(20px, 4vw, 34px);
 }
 
+.secondary-form {
+  margin-top: 24px;
+}
+
 .data-form label,
 .inline-form label,
 .data-form fieldset {
