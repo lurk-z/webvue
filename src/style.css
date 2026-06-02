@@ -13,6 +13,8 @@
   --charcoal: #171412;
   --shadow: 0 22px 60px rgba(53, 32, 20, 0.14);
   --radius: 8px;
+  --font-ui: "Inter Tight", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
 * {
@@ -27,7 +29,9 @@ body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: var(--font-ui);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
 
 button,
@@ -72,6 +76,7 @@ img {
   background: rgba(255, 250, 243, 0.92);
   border-bottom: 1px solid rgba(234, 220, 201, 0.86);
   backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
 .brand {
@@ -79,6 +84,8 @@ img {
   align-items: center;
   gap: 12px;
   font-weight: 900;
+  letter-spacing: 0;
+  white-space: nowrap;
 }
 
 .brand-mark {
@@ -91,6 +98,7 @@ img {
   color: #fff7e8;
   font-size: 0.85rem;
   letter-spacing: 0.06em;
+  font-family: var(--font-mono);
 }
 
 .site-nav,
@@ -100,6 +108,7 @@ img {
   gap: 20px;
   color: var(--muted);
   font-size: 0.94rem;
+  font-weight: 700;
 }
 
 .site-nav a,
@@ -129,6 +138,12 @@ img {
   padding: 0.85rem 1.1rem;
   font-weight: 800;
   cursor: pointer;
+  line-height: 1;
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+}
+
+.button:hover {
+  transform: translateY(-1px);
 }
 
 .button:disabled {
@@ -155,7 +170,7 @@ img {
 
 .section-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.02fr) minmax(320px, 0.98fr);
+  grid-template-columns: minmax(0, 1.02fr) minmax(300px, 0.98fr);
   gap: clamp(28px, 5vw, 76px);
   align-items: center;
 }
@@ -189,14 +204,15 @@ p {
 .subpage-hero h1,
 .success-section h1 {
   margin: 0;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-ui);
   line-height: 1.02;
   letter-spacing: 0;
+  font-weight: 900;
 }
 
 .hero-copy h1 {
-  max-width: 11ch;
-  font-size: clamp(3.4rem, 7vw, 6.4rem);
+  max-width: 12ch;
+  font-size: clamp(3rem, 6.4vw, 6rem);
 }
 
 .hero-copy p,
@@ -227,7 +243,7 @@ p {
 
 .hero-visual {
   position: relative;
-  min-height: 560px;
+  min-height: clamp(430px, 48vw, 560px);
   border-radius: var(--radius);
   overflow: hidden;
   background:
@@ -322,8 +338,9 @@ p {
 
 .metric-grid strong {
   display: block;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-mono);
   font-size: 2.6rem;
+  letter-spacing: -0.04em;
 }
 
 .metric-grid span {
@@ -340,7 +357,7 @@ p {
 .booking-preview h2,
 .subpage-hero h1,
 .success-section h1 {
-  font-size: clamp(2.3rem, 4.2vw, 4.1rem);
+  font-size: clamp(2.1rem, 4vw, 3.8rem);
 }
 
 .card-grid,
@@ -373,8 +390,9 @@ p {
 }
 
 .dish-card h3 {
-  font-family: Georgia, "Times New Roman", serif;
   font-size: 1.8rem;
+  font-weight: 900;
+  line-height: 1.08;
 }
 
 .dish-card div {
@@ -407,9 +425,9 @@ p {
   margin: 0;
   padding: 28px;
   color: var(--ink);
-  font-family: Georgia, "Times New Roman", serif;
   font-size: 1.45rem;
   line-height: 1.45;
+  font-weight: 800;
 }
 
 .newsletter-section {
@@ -472,8 +490,8 @@ p {
 
 .menu-section h2 {
   margin-bottom: 16px;
-  font-family: Georgia, "Times New Roman", serif;
   font-size: 2rem;
+  font-weight: 900;
 }
 
 .menu-row {
@@ -606,12 +624,14 @@ textarea:focus {
 
 @media (max-width: 1080px) {
   .site-header {
-    align-items: flex-start;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr auto;
   }
 
   .site-nav {
+    grid-column: 1 / -1;
     flex-wrap: wrap;
+    gap: 10px 18px;
   }
 
   .section-grid,
@@ -623,11 +643,16 @@ textarea:focus {
   .hero-section {
     min-height: auto;
   }
+
+  .card-grid,
+  .quote-grid,
+  .menu-board {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 760px) {
   .site-header,
-  .site-nav,
   .hero-actions,
   .form-actions,
   .site-footer nav {
@@ -635,12 +660,47 @@ textarea:focus {
     flex-direction: column;
   }
 
+  .site-header {
+    display: flex;
+    gap: 14px;
+    padding-block: 12px;
+  }
+
+  .site-header > .button {
+    width: 100%;
+  }
+
+  .site-nav {
+    width: calc(100% + 36px);
+    margin-inline: -18px;
+    padding-inline: 18px;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: none;
+    flex-wrap: nowrap;
+    gap: 10px;
+  }
+
+  .site-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .site-nav a {
+    min-height: 38px;
+    padding: 0 12px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: rgba(255, 255, 255, 0.7);
+    white-space: nowrap;
+  }
+
   .hero-copy h1 {
-    font-size: 3.1rem;
+    max-width: 13ch;
+    font-size: clamp(2.5rem, 14vw, 3.6rem);
   }
 
   .hero-visual {
-    min-height: 420px;
+    min-height: 360px;
   }
 
   .metric-grid,
@@ -654,5 +714,69 @@ textarea:focus {
 
   .inline-form .form-status {
     grid-column: auto;
+  }
+
+  .section {
+    padding-top: 46px;
+    padding-bottom: 46px;
+  }
+
+  .button,
+  .inline-form .button {
+    width: 100%;
+  }
+
+  .visual-card {
+    left: 18px;
+    bottom: 18px;
+    width: calc(100% - 36px);
+    padding: 18px;
+  }
+}
+
+@media (max-width: 430px) {
+  .site-header,
+  .section,
+  .site-footer {
+    padding-inline: 14px;
+  }
+
+  .site-nav {
+    width: calc(100% + 28px);
+    margin-inline: -14px;
+    padding-inline: 14px;
+  }
+
+  .brand-mark {
+    width: 38px;
+    height: 38px;
+  }
+
+  .hero-section {
+    padding-top: 34px;
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(2.25rem, 13vw, 3.1rem);
+  }
+
+  .hero-copy > p:not(.eyebrow) {
+    font-size: 1rem;
+  }
+
+  .dish-card,
+  .menu-section,
+  .metric-grid article,
+  .quote-grid blockquote,
+  .steps-list {
+    padding: 20px;
+  }
+
+  .steps-list {
+    padding-left: 38px;
+  }
+
+  .hero-visual {
+    min-height: 310px;
   }
 }
